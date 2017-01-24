@@ -13,9 +13,9 @@ drv <- dbDriver("PostgreSQL")
 
 host = 'localhost'  # Set the hostname or IP address
 port = '15432'  # Set the port the db server is listing at
-dbname = 'dijana_db'  # Define which databse should be used
-user = 'dijana'  # Set the username
-pwd = 'mink'  # Set password
+dbname = 'db'  # Define which databse should be used
+user = 'username'  # Set the username
+pwd = 'password'  # Set password
 
 
 flights.db <- dbConnect(drv,
