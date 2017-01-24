@@ -1,0 +1,512 @@
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(e1071)
+library(shinythemes)
+library(DT)
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+sidebarSearchForm(textId = "searchAirport",  'Choose departure airport code:', flights.df$Origin, "SFO")),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+ibrary(dplyr)
+library(ggplot2)
+library(shiny)
+library(reshape)
+library(reshape2)
+library(DBI)
+library(RPostgreSQL)
+#read the database settings
+drv <- dbDriver("PostgreSQL")
+host = 'localhost'  # Set the hostname or IP address
+port = '15432'  # Set the port the db server is listing at
+dbname = 'dijana_db'  # Define which databse should be used
+user = 'dijana'  # Set the username
+pwd = 'mink'  # Set password
+flights.db <- dbConnect(drv,
+host = host,
+port = port,
+dbname = dbname,
+user = user,
+password = pwd)
+flights.db <- src_postgres(dbname =dbname,
+host = host,
+port = port,
+user = user,
+password = pwd)
+flights <- tbl(flights.db, "connections")
+# create data frame for the needed infomation
+flights.df <- flights %>%
+select(UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+airport <- reactive({
+flights.df %>%
+filter(Origin == input$Origin)
+})
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+sidebarSearchForm(textId = "searchAirport",  'Choose departure airport code:', flights.df$Origin, "SFO")),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+ibrary(dplyr)
+library(ggplot2)
+library(shiny)
+library(reshape)
+library(reshape2)
+library(DBI)
+library(RPostgreSQL)
+#read the database settings
+drv <- dbDriver("PostgreSQL")
+host = 'localhost'  # Set the hostname or IP address
+port = '15432'  # Set the port the db server is listing at
+dbname = 'dijana_db'  # Define which databse should be used
+user = 'dijana'  # Set the username
+pwd = 'mink'  # Set password
+flights.db <- dbConnect(drv,
+host = host,
+port = port,
+dbname = dbname,
+user = user,
+password = pwd)
+flights.db <- src_postgres(dbname =dbname,
+host = host,
+port = port,
+user = user,
+password = pwd)
+flights <- tbl(flights.db, "connections")
+# create data frame for the needed infomation
+flights.df <- flights %>%
+select(UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+library(dplyr)
+library(ggplot2)
+library(shiny)
+library(reshape)
+library(reshape2)
+library(DBI)
+library(RPostgreSQL)
+drv <- dbDriver("PostgreSQL")
+host = 'localhost'  # Set the hostname or IP address
+port = '15432'  # Set the port the db server is listing at
+dbname = 'dijana_db'  # Define which databse should be used
+user = 'dijana'  # Set the username
+pwd = 'mink'  # Set password
+flights.db <- dbConnect(drv,
+host = host,
+port = port,
+dbname = dbname,
+user = user,
+password = pwd)
+flights.db <- src_postgres(dbname =dbname,
+host = host,
+port = port,
+user = user,
+password = pwd)
+flights <- tbl(flights.db, "connections")
+# create data frame for the needed infomation
+flights.df <- flights %>%
+select(UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(e1071)
+library(shinythemes)
+library(DT)
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+sidebarSearchForm(textId = "searchAirport",  'Choose departure airport code:', flights.df$Origin, "SFO")),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+airport <- reactive({
+flights.df %>%
+filter(Origin == input$Origin)
+})
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+sidebarSearchForm("airportCode",  'Choose departure airport code:', flights.df$Origin, "SFO")),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(e1071)
+library(shinythemes)
+library(DT)
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+sidebarSearchForm("airport",  'Choose departure airport code:', flights.df$Origin, "SFO")),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+airCode <- reactive({
+input$airport
+})
+rm(airport)
+rm(airCode())
+rm(airCode)
+install.packages("northeast")
+install.packages("nortest")
+library(nortest)
+library(qcc)
+flightData <- reactive({
+data1 <- filter(flights.df, Origin == input$airport)
+data2 <- data1$DepDelayMinutes
+return(flightData)
+})
+flightData <- reactive({
+filter(flights.df, Origin == input$airport)
+return(flightData)
+})
+output$hist <- renderPlot({hist(flightData()$DepDelayMinutes)})
+flightData <- reactive({
+flights.df %<%
+filter(Origin == input$Origin)
+return(flightData)
+})
+output$hist <- renderPlot({hist(flightData()$DepDelayMinutes)})
+library(dplyr)
+library(ggplot2)
+library(shiny)
+library(DBI)
+library(RPostgreSQL)
+library(qcc)
+library(nortest)
+data <- reactive({
+flights.df %>%
+filter(Origin==input$Origin)})
+output$hist <- renderPlot({hist(data()$DepDelayMinutes)})
+server <- function(input, output) {
+data <- reactive({
+flights.df %>%
+filter(Origin==input$Origin)})
+output$hist <- renderPlot({hist(data()$DepDelayMinutes)})
+}
+shinyApp(ui, server)
+server <- function(input, output) {
+data <- reactive({
+flights.df %>%
+filter(Origin==input$Origin)})
+output$hist <- renderPlot({hist(data()$DepDelayMinutes)})
+}
+shinyApp(ui, server)
+flights.df <- flights %>%
+select(UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+View(flights.df)
+selectInput("Airport", 'Choose departure airport code:', flights.df$Origin, selected = NULL)),
+ui <- dashboardPage(
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+selectInput("Airport", 'Choose departure airport code:', flights.df$Origin, selected = NULL)),
+dashboardBody(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+))
+dataInput <- reactive({
+flights.df %>%
+filter(Origin == input$Origin)})
+output$hist <- renderPlot({hist(dataInput()$DepDelayMinutes)})
+dataInput <- reactive({
+filter(flights.df, Origin == input$Airport)})
+output$hist <- renderPlot({hist(dataInput()$DepDelayMinutes)})
+dataInput <- reactive({
+filter(flights.df, Origin == input$Airport)})
+output$hist <- renderPlot({hist(dataInput()$DepDelayMinutes)})
+flights.df <- flights %>%
+select(Month, UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+ui <- dashboardPage(skin = blue,
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+selectInput("Airport", 'Choose departure airport code:', flights.df$Origin, selected = NULL)),
+dashboardBody(
+box(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("Xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("Cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+)))
+ui <- dashboardPage(skin = "blue",
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+selectInput("Airport", 'Choose departure airport code:', flights.df$Origin, selected = NULL)),
+dashboardBody(
+box(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("Xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("Cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+)))
+server <- function(input, output) {
+server <- function(input, output) {
+dataInput <- reactive({
+flights.df %>%
+filter(Origin == input$Airport)
+})
+output$hist <- renderPlot({hist(dataInput()$DepDelayMinutes)})
+shinyApp(ui, server)
+runApp('~/Documents/GitHub/Final')
+runApp('~/Documents/GitHub/Final')
+runApp('~/Documents/GitHub/Final')
+output$hist <- renderPlot({
+ggplot(data = dataInput, aes(dataInput()$DepDelayMinutes)+
+geom_histogram(breaks=seq(0,500, by = 5),
+col = "red",
+fill = "blue",
+alpha = .2))
+})
+output$xplot <- renderPlot({
+qcc(dataInput()$DepDelayMinutes, type = "xbar.one", nsigmas = 3)
+})
+dataInput <- reactive({
+flights.df %>%
+dataInput1 <- filter(Origin == input$Airport)
+dataIbout2 <- dataInput1$DepDelayMinutes
+})
+output$hist <- renderPlot({
+ggplot(dataInput(), aes(dataInput1()$DepDelayMinutes)+
+geom_histogram(breaks=seq(0,500, by = 5),
+col = "red",
+fill = "blue",
+alpha = .2)+
+labs(x="Departure delay in minutes", y = "Flights count"))
+})
+output$boxplot <- renderPlot({
+ggplot(dataInput1(), aes(x= flights.df$Month, y=flights.df$DepDelayMinutes))+
+stat_boxplot(geom = "errorbar")+
+geom_boxplot()+
+labs(x = "Month", y = "Departure delay in minutes")
+})
+dataInput <- reactive({
+flights.df %>%
+dataInput1 <- filter(Origin == input$Airport)
+dataIbout2 <- dataInput1$DepDelayMinutes
+})
+server <- function(input, output) {
+dataInput <- reactive({
+flights.df %>%
+filter(Origin == input$Airport)
+})
+output$hist <- renderPlot({
+ggplot(dataInput(), aes(dataInput1()$DepDelayMinutes)+
+geom_histogram(breaks=seq(0,500, by = 5),
+col = "red",
+fill = "blue",
+alpha = .2)+
+labs(x="Departure delay in minutes", y = "Flights count"))
+ui <- dashboardPage(skin = "blue",
+dashboardHeader(title = 'JetBlue'),
+dashboardSidebar(
+selectInput("Airport", 'Choose departure airport code:', flights.df$Origin, selected = NULL)),
+dashboardBody(
+box(
+tabPanel("Histogram", "Histogram", plotOutput("hist")),
+tabPanel("Boxplot", "Boxplot", plotOutput("boxplot")),
+tabPanel("DescStats", "Descriptive Statistics", verbatimTextOutput("stats")),
+tabPanel("Xbar", "X-bar and Range", plotOutput("xplot")),
+tabPanel("Cap", "Process capabilities", plotOutput("cplot")),
+tabPanel("Data", dataTableOutput("table"))
+)))
+library(DT)
+runApp('~/Documents/GitHub/Final')
+runApp('~/Documents/GitHub/Final')
+drv <- dbDriver("PostgreSQL")
+host = 'localhost'  # Set the hostname or IP address
+port = '15432'  # Set the port the db server is listing at
+dbname = 'dijana_db'  # Define which databse should be used
+user = 'dijana'  # Set the username
+pwd = 'mink'  # Set password
+flights.db <- dbConnect(drv,
+host = host,
+port = port,
+dbname = dbname,
+user = user,
+password = pwd)
+flights.db <- src_postgres(dbname =dbname,
+host = host,
+port = port,
+user = user,
+password = pwd)
+flights <- tbl(flights.db, "connections")
+# create data frame for the needed infomation
+flights.df <- flights %>%
+select(Month, UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+library(dplyr)
+library(ggplot2)
+library(shiny)
+library(DBI)
+library(RPostgreSQL)
+library(qcc)
+library(DT)
+library(shinydashboard)
+drv <- dbDriver("PostgreSQL")
+host = 'localhost'  # Set the hostname or IP address
+port = '15432'  # Set the port the db server is listing at
+dbname = 'dijana_db'  # Define which databse should be used
+user = 'dijana'  # Set the username
+pwd = 'mink'  # Set password
+flights.db <- dbConnect(drv,
+host = host,
+port = port,
+dbname = dbname,
+user = user,
+password = pwd)
+flights.db <- src_postgres(dbname =dbname,
+host = host,
+port = port,
+user = user,
+password = pwd)
+flights <- tbl(flights.db, "connections")
+# create data frame for the needed infomation
+flights.df <- flights %>%
+select(Month, UniqueCarrier, Origin, DepDelayMinutes) %>%
+filter(UniqueCarrier == "B6") %>%
+filter(DepDelayMinutes > 0) %>%
+collect (n = Inf)
+flights.df <- na.omit(flights.df)
+flights.df$Month <- as.character(flights.df$Month)
+shinyUI(
+pageWithSidebar(
+headerPanel("JetBlue Delayed Flights"),
+sidebarPanel(
+selectInput('airport', label = "Select airport code", choices = sort(unique(flights.df$Origin)),selected = 'SFO', multiple = FALSE),
+numericInput('lsl', 'Select lower limit - minutes delayed :', 0),
+numericInput('usl', 'Select upper limit - minutes delayed:', 350)
+),
+mainPanel(
+tabsetPanel(
+tabPanel('Histogram', plotOutput('hist')),
+tabPanel('Boxplot', plotOutput('boxplot')),
+tabPanel('Statistics', verbatimTextOutput('stats')),
+tabPanel('X-bar', plotOutput('xbar')),
+tabPanel('Capability', plotOutput('pc')),
+tabPanel('Data', verbatimTextOutput('data'))
+)
+)
+))
+library(dplyr)
+library(ggplot2)
+library(shiny)
+library(DBI)
+library(RPostgreSQL)
+library(qcc)
+library(DT)
+library(shinydashboard)
+shinyServer(function(input, output){
+b6data <- reactive({
+flights.df %>%
+filter(Origin == input$airport)
+})
+# histogram
+output$hist <- renderPlot({
+b6data =  filter(flights.df, Origin == input$airport)
+hist(b6data$DepDelayMinutes, col = 'blue', main = 'JetBlue delayed flights', xlab = 'Flight delay (min)')
+})
+# boxplot
+output$boxplot <- renderPlot({
+b6data = filter(flights.df, Origin == input$airport)
+ggplot(b6data, aes(x = UniqueCarrier, y = DepDelayMinutes))+
+stat_boxplot(geom = "errorbar")+
+geom_boxplot()+
+labs(x =  "JetBlue", y = "Departure Delay")
+})
+# statistics
+output$stats <- renderPrint({
+b6data = filter(flights.df, Origin == input$airport)
+b6data1 <- b6data$DepDelayMinutes
+cat(
+paste("Count      =", length(b6data1)), "\n",
+paste("Sum        =", sum(b6data1)), "\n",
+paste("Min        =", min(b6data1)), "\n",
+paste("Max        =", max(b6data1)), "\n",
+paste("Min        =", min(b6data1)), "\n",
+paste("Mean       =", mean(b6data1)), "\n",
+paste("Median     =", median(b6data1)),"\n",
+paste("SDev       =", sd(b6data1)), "\n",
+paste("Variance   =", var(b6data1)), "\n"
+)
+})
+# x bar
+output$xbar <- renderPlot({
+b6data = filter(flights.df, Origin == input$airport)
+b6data1 <- b6data$DepDelayMinutes
+qcc(b6data1, type = "xbar.one", nsigmas = 3)
+})
+#  process capabilities
+output$pc <- renderPlot({
+b6data = filter(flights.df, Origin == input$airport)
+b6data1 <- b6data$DepDelayMinutes
+qx <- qcc(b6data1, type = "xbar.one", nsigmas = 3)
+process.capability(qx, spec.limits = c(input$lcl, input$usl))
+})
+# raw data
+output$data <- renderPrint({b6data()})
+})
+runApp()
+getwd()
+setwd(..)
+setwd('..')
+setwd('GitHub/final2/')
+runApp()
