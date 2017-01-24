@@ -1,0 +1,144 @@
+---
+title: "On Time Flight Performance: SFO Airport"
+subtitle: "Analyis of Departure Delayed Flights"
+author: "Dijana Obralic"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+library(knitr)
+library(pander)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+setwd("~/Documents/GitHub/Homework/Midterm/data/")
+source("On_Time_Performance_2016.R")
+```
+
+# \textbf{Introduction} 
+
+The dataset contains data 15962 flights from San Francisco airport for August 2016.  In total there were 3931 departure delayed flights.\par 
+
+```{marginfigure}
+Airlines that are analyzed in the report are: American Airlines (AA), Alaska (AS), JetBlue (B6), Delta (DL), United Airlines (UA), SkyWest (OO), Virgin America (VX), Southwest (WN), Frontier (F9) and Hawaiian (HA).
+```
+This report analyzes the most common factors that cause departure delay, whether there is a signfificant difference between the mentioend airlines and a regression model for prediction probability of future delayed flights. 
+
+# \textbf{Descriptive Analysis}
+
+The most frequent reason for a delayed flight is late aircraft.  On average, flights delayed due to late aircraft arrival are 52.2 minutes. The least frequent reason for delay is security. The data bellow suggests also that many times there are more than one reason causing flight departure delay because the total number of delayed flights is 3931 and summing all reasons individally exceeds 3931. \par
+The least predictable time of delay is carrier issues. It has the largest range of 1192 mins (about 19 hrs) of delay time and largest standard deviation (58.6 min) which suggests that the data is farther away from the mean. 
+
+```{r echo=FALSE}
+pandoc.table(delay.reasons, plain.ascii = TRUE, caption = "Reasons for departure delay")
+```
+
+
+# \textbf{Is there a difference between the airlines: ANOVA} 
+
+From table bellow:Froniter Airline has the highest percentage of delayed flights (35.7 %) and the longest delay time (69.8 min).
+
+```{r echo=FALSE}
+pander(SFO_flights.info, plain.ascii = TRUE, caption = "Information about airines")
+```
+
+Let's check if there is a significant difference betweeen the airlines: \par
+
+\textbf{H0} There is no significant airlines between the airlines\par
+\textbf{Ha} There is a significant difference between the airlines \par
+
+
+_Decision_ Reject Null H0 if p-value < 0.05 \par
+
+
+
+
+```{r echo=FALSE}
+pander(SFO_flights.anova.summary)
+```
+
+
+P-value is less than 0.05 therefore we reject the Null Hypothesis and conclude that there are significant differneces between the airlines reagarding departure delay time. The next step is to analyze where are the difference. 
+
+Based on the Tukey Kramer test \footnote{Detailed analysis of Tukey Kramer test in the Appendix} the major differences are (p-value < 0.05) are between the following airlines: \par
+Virgin America (VX) and American Airlines (AA) \par
+Southwest (WN) and American Airlines (AA)\par
+Delta (DL) and Alaska Airlines (AS) \par
+Delta (DL) and JetBlue (B6) \par
+Skywest (OO) and Delta (DL) \par
+United Airlines (UA) and Delta (DL) \par
+Virgin America (VX) and Delta (DL) \par
+Southwest (WN) and Delta (DL) \par
+Virgin America (VX) and Froniter \par
+
+
+
+```{r echo=FALSE}
+plot(SFO_flights.plot)
+```
+\footnote {The graph shows dispersion of departure flight delay time among different airlines}
+
+# \textbf{What is the probability that my flight is going to be delayed: Logistic regressions} 
+
+The goal is to predict whether the flight is going to be delayed or not based on the delayed flights in the dataset, day of the week, distance and carrier. \par
+The reason these variables are chosen is because we don't encounter many missing in which case we would need to deal with averages or meadian instead of raw data. 
+
+## First model
+
+The first model includes following variables: \par
+DepDel15 - indicates whether the flight is delayed (if delay time > 15 min)\par
+Carrier - converted into numerical binary values \par
+Day of week - represented as numbers 1-7 (Monday to Sunday)\par
+
+\textbf{H0} Delayed flights are not  significantly affected by Day of Week, Distance and Airline
+\textbf{Ha} Delayed flights are significantly affected by Day of Week, Distance and Airline
+
+```{r echo=FALSE}
+pander(m1.summary)
+```
+The data above suggests that we should drop Day, Distance and AA from the model because p-value < 0.05. This takes all of the variables from the model. Before making a conclusion, let's look at McFadden "pseudo" T-squared fit.\par
+According to McFadden "pseudo" R-squared fit, values between 0.2 and 0.4 represent an excellent fit. McFadden R-squared value is between 0 and 1 and represents likelihood of the dependent variable happening. \par
+
+```{r echo=FALSE}
+print(m1.McFadden.R2)
+```
+
+# Second model
+MacFadden R-squared value  < 0 which suggests that this is not a good fit. 
+
+Let's see what happens if we only drop Day of Week: 
+
+```{r echo=FALSE}
+print(m2.McFadden.R2)
+```
+
+Still, McFadden "pseudo" R-squared fit < 0. 
+
+Therefore we can reject the Alternative Hypothesis and accept the Null Hypothesis and conclude that Day of Week, Distance and Airline do not significantly affect delayed time. \par
+Next step would be to obtain additional data about weather and see if it significantly affects the departure flight delay. 
+
+
+
+# \textbf{Appendix}
+
+## Tukey Kramer Test
+```{r echo=FALSE, fig.width= 1000}
+pander(SFO_flights.tukey)
+```
+
+## Desination Info for Regression Analysis
+```{r echo=FALSE, fig.width= 1000}
+pander(destination.info)
+```
